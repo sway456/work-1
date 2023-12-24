@@ -1,103 +1,51 @@
 #include <iostream>
 using namespace std;
-class Product {
+
+// Abstract base class
+class Shape {
 public:
-    string productId;
-    string productName;
-    double price;
-
-    Product(string id, std::string name, double p) : productId(id), productName(name), price(p) {}
-
-    void displayDetails() {
-        cout << "Product ID: " << productId << ", Name: " << productName << ", Price: $" << price << endl;
-    }
+    // Pure virtual function
+    virtual double getArea() = 0;
 };
 
-class ShoppingCart {
+// Derived class 1
+class Rectangle : public Shape {
 private:
-    static const int MAX_PRODUCTS = 10;
-    Product* products[MAX_PRODUCTS];
-    int numProducts;
-
+    double width;
+    double height;
 public:
-    ShoppingCart() : numProducts(0) {}
-
-    void addProduct(Product* product) {
-        if (numProducts < MAX_PRODUCTS) {
-            products[numProducts++] = product;
-        }
-        else {
-            std::cout << "Shopping Cart is full. Cannot add more products." << endl;
-        }
+    Rectangle(double w, double h) {
+        width = w;
+        height = h;
     }
-
-    void displayProducts() {
-        cout << "Products in Cart:" << endl;
-        for (int i = 0; i < numProducts; ++i) {
-            products[i]->displayDetails();
-        }
-    }
-
-    double calculateTotal() {
-        double total = 0.0;
-        for (int i = 0; i < numProducts; ++i) {
-            total += products[i]->price;
-        }
-        return total;
+    double getArea() {
+        return width * height;
     }
 };
 
-class User {
+// Derived class 2
+class Circle : public Shape {
+private:
+    double radius;
 public:
-    string userId;
-    string userName;
-    ShoppingCart* shoppingCart;
-
-    User(std::string id, std::string name) : userId(id), userName(name), shoppingCart(nullptr) {}
-
-    void displayDetails() {
-        cout << "User ID: " << userId << ", Name: " << userName << endl;
+    Circle(double r) {
+        radius = r;
     }
-
-    void setShoppingCart(ShoppingCart* cart) {
-        shoppingCart = cart;
+    double getArea() {
+        return 3.14 * radius * radius;
     }
 };
 
 int main() {
- 
-    Product* product1 = new Product("001", "Item1", 10.0);
-    Product* product2 = new Product("002", "Item2", 15.0);
+    // Create a rectangle object
+    Rectangle rect(5, 10);
 
-    
-    ShoppingCart* cart = new ShoppingCart();
+    // Create a circle object
+    Circle circle(7);
 
-    
-    cart->addProduct(product1);
-    cart->addProduct(product2);
-
-  
-    User* user = new User("123", "John");
-
-   
-    user->setShoppingCart(cart);
-
-   
-    user->displayDetails();
-
-    
-    cart->displayProducts();
-
-  
-    double totalCost = cart->calculateTotal();
-
-    cout << "Total Cost: $" << totalCost << endl;
-
-   
-    delete product1;
-    delete product2;
-    delete cart;
-    delete user;
+    // Call the getArea() function for each object
+    cout << "Area of rectangle: " << rect.getArea() << endl;
+    cout << "Area of circle: " << circle.getArea() << endl;
 
     return 0;
 }
